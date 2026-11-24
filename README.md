@@ -29,9 +29,11 @@ Instead of basic text matching that throws false alarms on normal words or valid
 built a deterministic AST visitor (LookaheadVisitor) and orchestration engine (QuantAuditor). I
 also created a custom benchmark suite of flawed and clean strategy scripts alongside unittest
 verification tests.
+
 How It Works
 AST Parsing (CodeParser): Uses Python's native ast.parse() to convert raw code into a
 syntax tree without executing untrusted scripts.
+
 Structural Rules (LookaheadVisitor): Inspects .shift() calls for negative integer constants
 (-1, -2) and flags forward additions on time indices (t + 1).
 Diagnostics (QuantAuditor): Outputs exact line numbers, rule violations, and clean handling
