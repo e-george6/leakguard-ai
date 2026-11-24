@@ -1,5 +1,6 @@
 # leakguard-ai
-VERITAS AI HACKATHON · PROJECT WRITE-UP (that won me an Excellence Award+ $1000 scholarship) 
+VERITAS AI HACKATHON · 
+PROJECT WRITE-UP (that won me an Excellence Award+ $1000 scholarship) 
 LeakageGuard AI: Quant Code Auditor
 Track: AI + Finance · Author: Sairah Elizabeth George
 This project is a static code analysis prototype for development verification purposes and is not financial advice.
@@ -10,10 +11,12 @@ references future price bars—such as shifting a Pandas series backward
 (df['close'].shift(-1)) or indexing forward in a loop (t + 1)—backtests show unrealistic
 profits that fail in live markets. Quantitative developers need a fast, automated pre-flight check to
 catch data leakage before running backtests.
+
 What I Built
 LeakageGuard AI is a static code auditor that parses Python trading scripts into an Abstract Syntax
 Tree (AST) and scans for structural time-series leakage. It returns a clear PASSED or FAILED
 diagnostic report pinpointing the exact line numbers and violation types:
+
 [*] Running LeakageGuard AI audit... ❌ AUDIT FAILED: Lookahead Violations
 Detected! - Violation #1 (Line 5) [Pandas Data Leakage]: Negative shift shift(-1)
 references future prices in backtest. - Violation #2 (Line 8) [Lookahead Indexing
@@ -34,11 +37,11 @@ Structural Rules (LookaheadVisitor): Inspects .shift() calls for negative intege
 Diagnostics (QuantAuditor): Outputs exact line numbers, rule violations, and clean handling
 for syntax errors.
 
-LeakageGuard AI — Project Write-Up Page 1 of 2
 
 Results & Baseline Comparison
-Tested across custom strategy scripts containing negative shifts, forward offsets, and valid historical
+I Tested across custom strategy scripts containing negative shifts, forward offsets, and valid historical
 rolling windows (close.rolling(20).mean()):
+
 Audit Method Leakage Caught False Alarms Diagnostics
 Baseline 1: Manual review 0% automated 0 None
 Baseline 2: Naive text search 100% High (flags valid
@@ -56,10 +59,13 @@ Because static AST analysis inspects code structure without running it, it curre
 variable indirection—for example, if a negative offset is stored in an external config file or assigned
 to a variable (offset = -1; df['close'].shift(offset)) rather than written as a literal
 constant.
+
 What I Would Do Next
 Constant Propagation: Track variable assignments across the AST scope so indirect negative
 offsets are resolved and flagged.
+
 Expanded Rules: Add checks for backward-filling leakage (bfill()) and forward-looking
 merge_asof() calls.
+
 Git Pre-Commit Hook: Package the auditor as a CLI pre-commit check to block leaky code
 automatically before merging.
